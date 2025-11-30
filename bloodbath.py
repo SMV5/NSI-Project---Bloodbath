@@ -26,16 +26,16 @@ while True:
     print("\t2 – Afficher les finances du magasin")
     print("\t3 – Quitter")
     print('='*40) 
-    samsam = input("Répondez Ici!!!")
+    choice = input("Répondez Ici!!!") # The rules says every name has to be self-explainatory, so you never know if i get -1 
 
-    if samsam == "1":
+    if choice == "1":
         nom = input("Nom de l'article : ")
         prix = float(input("Prix HT : "))
         article = Article(nom, prix)
         achats.inserer(article)
         print("-> Article ajouté !")
 
-    elif samsam == "2":
+    elif choice == "2":
         total = 0
         courant = achats._ListeChainee__tete
 
@@ -49,7 +49,7 @@ while True:
                 courant = courant.suivant
             print("TOTAL =", total, "€")
 
-    elif samsam == "3":
+    elif choice == "3":
         with open(fichier_csv, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["nom", "prix"])
