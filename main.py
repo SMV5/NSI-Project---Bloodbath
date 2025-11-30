@@ -1,57 +1,84 @@
 import csv
+from Article import *
 
 def import_recettes(lien_fichier):
     """
-    Fonction permettant d'importer les données des recettes
+    Importe les achats stockés dans un fichier CSV.
 
     Paramètres
     ----------
-    - lien_fichier : le lien vers le fichier CSV (chaîne de caractères)
+    lien_fichier : str = Chemin vers le fichier CSV
 
-    Return
+    Retour
     ------
-    les données du fichier (<type à remplir>)
+    list[Achat] = Une liste contenant les objets Achat extraits du fichier.
+
+    >>> type(import_recettes("recettes_test.csv"))
+    <class 'list'>
     """
 
-    # Créer ici une instance de la structure de données linéaire
-    # utilisée pour stocker les achats
-    # ...
-    
+    assert isinstance(lien_fichier, str)
+
+    achats = []  # structure de données linéaire : une simple liste
+
     with open(lien_fichier, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        champs = next(reader)
+        champs = next(reader)  # on saute l'entête
+
         for row in reader:
             nom_article = row[0]
             prix_article = float(row[1])
 
-            # Créer ici une instance d'achat et la stocker dans
-            # la structure de données linéaire
-            # ...
+            achat = Article(nom_article, prix_article)
+            achats.append(achat)
 
-    # Retourner ici la structure de données linéaire
-    # ...
+    return achats
+
 
 def export_recettes(lien_fichier, donnees):
     """
-    Fonction permettant d'exporter des données vers un fichier CSV
+    Exporte des objets Achat dans un fichier CSV.
 
     Paramètres
     ----------
-    - lien_fichier : le lien vers le fichier CSV (chaîne de caractères)
-    - donnees : les données à exporter (<type à compléter>)
+    lien_fichier : str = Chemin du fichier CSV à créer
+    donnees : list[Achat] = Liste d'objets Achat
     """
-    
+
+    assert isinstance(lien_fichier, str)
+    assert isinstance(donnees, list)
+
     with open(lien_fichier, "w", newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-        # Champs du fichier CSV
+        # Entête
         champs = ["nom_article", "prix_HT"]
+        writer.writerow(champs)
 
-        # Ecriture de l'entête du fichier (noms des champs)
-        writer.write(champs)
+        # Données
+        for achat in donnees:
+            ligne = [achat.nom, achat.prix_ht]
+            writer.writerow(ligne)
 
-        # Ecrire ici la 1ère ligne de la boucle de parcours des données
-            ligne = [...] # tableau contenant le nom et le prix de l'article (à compléter)
-            writer.write(ligne)
 
-import_recettes("recettes.csv")
+def total_recettes(liste_achats):
+    """
+    Calcule le total HT des recettes.
+
+    Paramètres
+    ----------
+    liste_achats : list[Article]
+
+    Retour
+    ------
+    float : somme des prix HT
+
+    >>> total_recettes([Article("Baguette", 1.0), Article("Lait", 2.0)])
+    3.0
+    """
+    assert isinstance(liste_achats, list)
+
+    total = 0
+    for achat in liste_achats:
+        total += achat.prix_ht
+    return total

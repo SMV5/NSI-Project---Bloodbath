@@ -56,7 +56,7 @@ class Article:
 
         Post-Condition
         --------
-        Une valeur type Int (donc un Résultat qui contient le Prix Hors Taxe)
+        Une valeur type Int ou Float (donc un Résultat qui contient le Prix Hors Taxe)
         
         Example
         --------
