@@ -22,3 +22,11 @@ Tous est séparé pour le moment, cependant, il ce peut que je fusionne certains
 - https://techbeamers.com/linked-lists-in-python/
 
 Si cela pose un problème, j'en suis désolé et je ferais tache de tous refaire, je me suis juste un peu aidé
+
+2/12/2025
+
+-> Exemple de Dépense en CSV : categorie,montant
+Class "Depense" crée et codée !
+-> bloodbath.py modifié avec l'ajout du CSV de la Dépense (copier-coller) + ajout d'un choix qui permet d'ajouter des dépenses (idem)
+-> Main.py Supprimé! (Useless)
+-> bloodbath.py = Renommé en "MainMenu.py"
