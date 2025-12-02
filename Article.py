@@ -99,11 +99,19 @@ class Article:
         --------
         L'Attribut modifié 
 
+        Pré-Condition
+        --------
+        - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
+
         Post-Condition
         --------
         Une valeur de type Int (donc une Valeur qui contient le Nouveau Prix)
         
         """
+        assert self.__prix_hors_taxe == int or self.__prix_hors_taxe == float, "Le Prix doit être un nombre"
+        assert self.__prix_hors_taxe != 0, "L'Article ne peut guère etre Gratuit.."
+        assert self.__prix_hors_taxe < 0, "L'Article ne peut point etre négatif..."
+
         self.__prix_hors_taxe = nouveau_prix
 
 def main():

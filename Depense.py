@@ -41,7 +41,17 @@ class Depense:
         self.__categorie = categorie
 
     def set_montant(self, montant):
-        """Méthode publique qui permet de modifier le montant."""
+        """Méthode publique qui permet de modifier le montant.
+
+        Pré-Condition
+        --------
+        - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
+        
+        """
+        assert self.__montant == int or self.__montant == float, "Le Montant doit être un nombre"
+        assert self.__montant != 0, "Le Montant ne peut guère etre Gratuit.."
+        assert self.__montant < 0, "Le Montant ne peut point etre négatif..."
+
         self.__montant = montant
 
 def main():

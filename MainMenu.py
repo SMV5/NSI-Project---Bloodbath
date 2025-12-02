@@ -1,4 +1,6 @@
+import doctest
 import csv
+import matplotlib.pyplot as plt
 from Article import *
 from ListeChainee import *
 from Depense import *
@@ -7,6 +9,133 @@ fichier_csv = "recettes.csv"
 fichier_depenses = "depenses.csv"
 achats = ListeChainee()
 depenses = ListeChainee()
+
+def ajout_achat(achats):
+    """
+    Fonction qui permet d'ajouter un achat
+
+    Paramètres
+    ----------
+    - achats (Structure De Donnée) : Liste qui stock le ou les achats ajoutés
+
+    Print
+    --------
+    Le Produit et son prix
+
+    Pré-Condition
+    --------
+    - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
+
+    Post-Condition
+    --------
+    Une chaine de caractère quelconque pour le Nom du produit et une chaine de caractère type Int OU Float pour le montant
+        
+    Example
+    --------
+    >>> test = Article("chips", 6.5); ajout_achat(achats)
+    'chips : 6.5 €'
+        
+    """
+    # Préconditions
+    assert achats == int or achats == float, "Le Prix doit être un nombre"
+
+    nom = input("Nom de l'article : ")
+    prix = float(input("Prix HT : "))
+    article = Article(nom, prix)
+    achats.inserer(article)
+    print("-> Article ajouté !")
+
+def ajout_depense(depenses):
+    """
+    Fonction qui permet d'ajouter une dépense
+
+    Paramètres
+    ----------
+    - depenses (Structure De Donnée) : Liste qui stock le ou les depenses ajoutés
+
+    Print
+    --------
+    La Catégorie de la Dépense et son Montant
+
+    Pré-Condition
+    --------
+    - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
+
+    Post-Condition
+    --------
+    Une chaine de caractère quelconque pour le Nom de la dépense et une chaine de caractère type Int OU Float pour le montant
+        
+    Example
+    --------
+    >>> test = Depense("Stock De Jeux Steam", 199.99); ajout_depense(depenses)
+    'Stock De Jeux Steam : 199.99 €'
+        
+    """
+    # Préconditions
+    assert depenses == int or depenses == float, "Le Montant doit être un nombre"
+
+    categorie = input("Catégorie : ")
+    montant = float(input("Montant : "))
+    depenses.inserer(Depense(categorie, montant))
+    print("-> Dépense ajoutée !")
+
+def afficher_finance(achats, depenses):
+    """
+    Fonction qui permet d'afficher les finances du Magazin donc les Achats mais aussi les propre Dépenses du Shop
+
+    Paramètres
+    ----------
+    - achats (Structure De Donnée) : Liste qui stock le ou les achats ajoutés
+    - depenses (Structure De Donnée) : Liste qui stock le ou les depenses ajoutés
+
+    Print
+    --------
+    Le Total d'Achats effectués, les Dépenses du Shop, le Total des deux ET Les Bénéfices du Shop
+
+    Post-Condition
+    --------
+    Une chaine de caractère quelconque pour le Nom des produits et des dépenses et une chaine de caractère type Int OU Float pour les montants en question
+        
+    Example
+    --------
+    >>> test = Article("chips", 6.5); ajout_achat(achats)
+    'chips : 1.5 €'
+        
+    """
+    total_recettes = 0
+    courant = achats._ListeChainee__tete
+    if courant is None:
+        print("Aucun achat.")
+    else:
+        while courant is not None:
+            a = courant.valeur
+            print(a.get_nom(), ":", a.get_prix_hors_taxe(), "€")
+            total_recettes += a.get_prix_hors_taxe()
+            courant = courant.suivant
+        print("TOTAL =", total_recettes, "€")
+    
+    total_depenses = 0
+    courant = depenses._ListeChainee__tete
+    if courant is None:
+        print("Aucune dépense.")
+    else:
+        while courant is not None:
+            d = courant.valeur
+            print(d.get_categorie(), ":", d.get_montant(), "€")
+            total_depenses += d.get_montant()
+            courant = courant.suivant
+        print("Dépenses =", total_depenses, "€")
+
+    print("\n=== Bénéfice net ===")
+    print("Bénéfice =", total_recettes - total_depenses, "€")
+
+def afficher_diagrame():
+    x = ["Barre 1", "Barre 2", "Barre 3"]
+
+    y = [15, 20, 12]
+
+    plt.bar(x, y)
+    plt.show()
 
 try:
     with open(fichier_csv, newline="") as f:
@@ -45,45 +174,13 @@ while True:
     choice = input("Répondez Ici!!!") # The rules says every name has to be self-explainatory, so you never know if i get -1 
 
     if choice == "1":
-        nom = input("Nom de l'article : ")
-        prix = float(input("Prix HT : "))
-        article = Article(nom, prix)
-        achats.inserer(article)
-        print("-> Article ajouté !")
+        ajout_achat(achats)
 
     elif choice == "2":
-        categorie = input("Catégorie : ")
-        montant = float(input("Montant : "))
-        depenses.inserer(Depense(categorie, montant))
-        print("-> Dépense ajoutée !")
+        ajout_depense(depenses)
 
     elif choice == "3":
-        total_recettes = 0
-        courant = achats._ListeChainee__tete
-        if courant is None:
-            print("Aucun achat.")
-        else:
-            while courant is not None:
-                a = courant.valeur
-                print(a.get_nom(), ":", a.get_prix_hors_taxe(), "€")
-                total_recettes += a.get_prix_hors_taxe()
-                courant = courant.suivant
-            print("TOTAL =", total_recettes, "€")
-    
-        total_depenses = 0
-        courant = depenses._ListeChainee__tete
-        if courant is None:
-            print("Aucune dépense.")
-        else:
-            while courant is not None:
-                d = courant.valeur
-                print(d.get_categorie(), ":", d.get_montant(), "€")
-                total_depenses += d.get_montant()
-                courant = courant.suivant
-            print("Dépenses =", total_depenses, "€")
-
-        print("\n=== Bénéfice net ===")
-        print("Bénéfice =", total_recettes - total_depenses, "€")
+        afficher_finance(achats, depenses)
 
     elif choice == "4":
         with open(fichier_csv, "w", newline="") as f:
@@ -108,3 +205,9 @@ while True:
 
     else:
         print("Choix invalide.")
+
+def main():
+    # Exécution des tests
+    doctest.testmod()
+
+main()
