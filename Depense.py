@@ -40,7 +40,7 @@ class Depense:
         """Méthode publique qui permet de modifier la catégorie."""
         self.__categorie = categorie
 
-    def set_montant(self, montant):
+    def set_montant(self, nouveau_montant):
         """Méthode publique qui permet de modifier le montant.
 
         Pré-Condition
@@ -48,11 +48,11 @@ class Depense:
         - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
         
         """
-        assert self.__montant == int or self.__montant == float, "Le Montant doit être un nombre"
-        assert self.__montant != 0, "Le Montant ne peut guère etre Gratuit.."
-        assert self.__montant < 0, "Le Montant ne peut point etre négatif..."
+        if type(nouveau_montant) not in (int, float) or nouveau_montant <= 0:
+            print("Erreur : le montant doit être un nombre positif")
+            return
 
-        self.__montant = montant
+        self.__montant = nouveau_montant
 
 def main():
     # Exécution des tests
