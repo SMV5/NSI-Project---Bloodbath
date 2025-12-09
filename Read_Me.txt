@@ -42,10 +42,19 @@ Class "Depense" crée et codée !
 + Fonction et Import mises en Commentaire car sinon le code ne fonctionnera pas (vous pouvez faire le ou les tests de votre coté cela dit)
 -> Documentations Du MainMenu et des Classes (Article et Depenses) améliorées / terminées
 
+09/12/2025 - BONUS
+
+-> Correction de documentation inutile (pour certains Return non existants)
+-> Correction de la Fonction afficher_diagrame
+-> Ajouts d'Asserts (nouveaux)
+--> Plus de Tests!!!
+-> Choix 4 = Transférée dans la fonction leave
+-> Ajout du Choix 4 = Afficher le Diagramme du Magasin
+-------> Chiffre Négatives ENFIN pris en compte pour que l'utilisateur est obligé de pas en mettre!!!
 ========== PROJET FINISHED ==========
 
 ----- TEMPS -----
-1 SEMAINE + 1 JOUR
+1 SEMAINE + 1 JOUR + 10 MINUTES
 
 ----- CREDIT -----
 RAYAN KHLIF

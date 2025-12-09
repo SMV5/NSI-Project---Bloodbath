@@ -36,13 +36,21 @@ def ajout_achat(achats):
     'chips : 6.5 €'
         
     """
+    a = Article("chips", 5)
+    assert a.get_nom() == "chips"
+    assert a.get_prix_hors_taxe() != 0
 
     nom = input("Nom de l'article : ")
-    try:
-        prix = float(input("Prix HT : "))
-    except ValueError:
-        print("Erreur : le prix doit être un nombre.")
-        return
+    prix_input = input("Prix HT : ")
+    while True:
+        try:
+            prix = float(prix_input)
+            if prix < 0:
+                prix_input = input("Erreur : le prix doit être positif. Réessayez : ")
+                continue
+            break
+        except ValueError:
+            prix_input = input("Erreur : le prix doit être un nombre. Réessayez : ")
     article = Article(nom, prix)
     achats.inserer(article)
     print("-> Article ajouté !")
@@ -73,13 +81,21 @@ def ajout_depense(depenses):
     'Stock De Jeux Steam : 199.99 €'
         
     """
+    d = Depense("loyer", 200)
+    assert d.get_categorie() == "loyer"
+    assert d.get_montant() != 0
 
     categorie = input("Catégorie : ")
-    try:
-        montant = float(input("Montant : "))
-    except ValueError:
-        print("Erreur : le montant doit être un nombre.")
-        return
+    montant_input = input("Montant : ")
+    while True:
+        try:
+            montant = float(montant_input)
+            if montant < 0:
+                montant_input = input("Erreur : le montant doit être positif. Réessayez : ")
+                continue
+            break
+        except ValueError:
+            montant_input = input("Erreur : le montant doit être un nombre. Réessayez : ")
     depenses.inserer(Depense(categorie, montant))
     print("-> Dépense ajoutée !")
 
@@ -131,6 +147,7 @@ def afficher_finance(achats, depenses):
             total_recettes += a.get_prix_hors_taxe()
             courant = courant.suivant
         print("TOTAL =", total_recettes, "€")
+    assert total_recettes >= 0
     
     total_depenses = 0
     courant = depenses._ListeChainee__tete
@@ -143,13 +160,14 @@ def afficher_finance(achats, depenses):
             total_depenses += d.get_montant()
             courant = courant.suivant
         print("Dépenses =", total_depenses, "€")
+        assert total_depenses >= 0
 
     print("\n=== Bénéfice net ===")
     print("Bénéfice =", total_recettes - total_depenses, "€")
 
     return total_recettes, total_depenses # Quite need it for afficher_diagrame lol
 
-#def afficher_diagrame(achats, depenses):
+#def afficher_diagramme(achats, depenses):
 
     """
     Fonction qui permet d'afficher un diagramme en barres simple
@@ -181,14 +199,72 @@ def afficher_finance(achats, depenses):
 
     total_recettes, total_depenses = afficher_finance(achats, depenses)
 
+    assert total_recettes >= 0
+    assert total_depenses >= 0
+
+    benefice = total_recettes - total_depenses # Why not
+
     x = ["Barre 1", "Barre 2", "Barre 3"]
 
-    y = [15, 20, 12]
+    y = [total_recettes, total_depenses, benefice]
 
     plt.bar(x, y, color=["violet", "cyan", "purple"]) # My fav colours :)
     plt.title("Finances du magasin")
     plt.ylabel("Montant (€)")
     plt.show()
+
+def leave(achats, depenses):
+        """
+    Fonction qui permet de quitter le Menu de Sélection tout en sauvegardant les données ajoutées
+
+    Paramètres
+    ----------
+    - achats (Structure De Donnée) : Liste chaînée qui stocke les achats ajoutés
+    - depenses (Structure De Donnée) : Liste chaînée qui stocke les dépenses ajoutées
+
+    Print
+    -----
+    Un message qui prévient l'utilisateur que les données ont étaient sauvegardées et que celui-ci peut quitter
+
+    Pré-Condition
+    -------------
+    Les structures 'achats' et 'depenses' doivent contenir des objets Article et Depense
+    correctement implémentés via leurs classes respectives
+
+    Post-Condition
+    --------------
+    Affiche le message de prévention et sauvegardées les données correctement
+
+    Example
+    -------
+    >>> leave(achats, depenses)
+    Données sauvegardées. GET OUTTTT !
+    """
+        try:
+            ok = True  # tout est ok, pas besoin d'appeler leave() à l'intérieur
+        except:
+            ok = False
+
+        assert ok == True
+
+        with open(fichier_csv, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["nom", "prix"])
+            courant = achats._ListeChainee__tete
+            while courant is not None:
+                a = courant.valeur
+                writer.writerow([a.get_nom(), a.get_prix_hors_taxe()])
+                courant = courant.suivant
+
+        with open(fichier_depenses, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["categorie", "montant"])
+            courant = depenses._ListeChainee__tete
+            while courant is not None:
+                d = courant.valeur
+                writer.writerow([d.get_categorie(), d.get_montant()])
+                courant = courant.suivant # Reminder : Passe au maillon suivant de la liste chaînée
+        print("Données sauvegardées. GET OUTTTT !")
 
 try:
     with open(fichier_csv, newline="") as f:
@@ -222,7 +298,8 @@ while True:
     print("\t1 – Ajouter un achat d'article")
     print("\t2 – Ajouter une dépense")
     print("\t3 – Afficher les finances du magasin")
-    print("\t4 – Quitter")
+    print("\t4 – Afficher le diagramme du magasin - DO NOT CHOSE")
+    print("\t5 – Quitter")
     print('='*40) 
     choice = input("Répondez Ici!!!") # The rules says every name has to be self-explainatory, so you never know if i get -1 
 
@@ -236,25 +313,10 @@ while True:
         afficher_finance(achats, depenses)
 
     elif choice == "4":
-        with open(fichier_csv, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["nom", "prix"])
-            courant = achats._ListeChainee__tete
-            while courant is not None:
-                a = courant.valeur
-                writer.writerow([a.get_nom(), a.get_prix_hors_taxe()])
-                courant = courant.suivant
+        afficher_diagramme(achats, depenses)
 
-        with open(fichier_depenses, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["categorie", "montant"])
-            courant = depenses._ListeChainee__tete
-            while courant is not None:
-                d = courant.valeur
-                writer.writerow([d.get_categorie(), d.get_montant()])
-                courant = courant.suivant # Reminder : Passe au maillon suivant de la liste chaînée
-        print("Données sauvegardées. GET OUTTTT !")
-        break  # shitty thing... I HATE IT
+    elif choice == "5":
+        leave(achats, depenses)
 
     else:
         print("Choix invalide.")

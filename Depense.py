@@ -48,6 +48,11 @@ class Depense:
         - La variable saisie pour le prix DOIT être un nombre entier (Pas de texte, liste, dictionnaire, tableau, etc..)
         
         """
+
+        d = Depense("loyer", 100)
+        d.set_montant(0)
+        assert d.get_montant() != 0
+
         if type(nouveau_montant) not in (int, float) or nouveau_montant <= 0:
             print("Erreur : le montant doit être un nombre positif")
             return
