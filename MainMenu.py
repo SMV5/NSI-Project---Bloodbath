@@ -1,6 +1,6 @@
 import doctest
 import csv
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from Article import *
 from ListeChainee import *
 from Depense import *
@@ -167,7 +167,7 @@ def afficher_finance(achats, depenses):
 
     return total_recettes, total_depenses # Quite need it for afficher_diagrame lol
 
-#def afficher_diagramme(achats, depenses):
+def afficher_diagramme(achats, depenses):
 
     """
     Fonction qui permet d'afficher un diagramme en barres simple
@@ -204,7 +204,7 @@ def afficher_finance(achats, depenses):
 
     benefice = total_recettes - total_depenses # Why not
 
-    x = ["Barre 1", "Barre 2", "Barre 3"]
+    x = ["Recettes", "Dépenses", "Bénéfice"]
 
     y = [total_recettes, total_depenses, benefice]
 
@@ -267,7 +267,7 @@ def leave(achats, depenses):
         print("Données sauvegardées. GET OUTTTT !")
 
 try:
-    with open(fichier_csv, newline="") as f:
+    with open(fichier_csv, newline="", encoding="latin-1") as f:
         lecteur = csv.reader(f)
         next(lecteur)  # sauter l'entête
         for ligne in lecteur:
