@@ -51,6 +51,12 @@ Class "Depense" crée et codée !
 -> Choix 4 = Transférée dans la fonction leave
 -> Ajout du Choix 4 = Afficher le Diagramme du Magasin
 -------> Chiffre Négatives ENFIN pris en compte pour que l'utilisateur est obligé de pas en mettre!!!
+
+18/12/2025 - A Fortiori
+
+-> Modification pour la compatibilité avec MacOS
+-> Fonction afficher_diagrame enfin testée et fini (Axe x correcte maintenant)
+-> Plus d'examples ajoutés 
 ========== PROJET FINISHED ==========
 
 ----- TEMPS -----
